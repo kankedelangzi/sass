@@ -1,0 +1,333 @@
+@import "_function.scss";
+
+* {
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-size:0.14rem;
+  }
+
+ul, li {
+  list-style: none; }
+i,em,address{font-style:normal;}
+h1,h2,h3,h4,h5,h6,strong{font-weight:500}
+mark{background:transparent}
+
+html {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  font-size: 625%; 
+  
+  }
+  @media all and(min-width:768px){
+     html{
+          font-size:750%;
+     }
+  }
+  @media all and(max-width:375px){
+     html{
+          font-size:500%;
+     }
+  }
+html,body{
+   font-family:"Microsorft YaHei";
+}
+img, div, body, html, ul, li, a {
+  -webkit-touch-callout: none; }
+   
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  color: #ccc; }
+html,body,.wrap{
+	 @include nums();
+	 overflow:hidden;
+}
+.wrap{
+	@include flex($dir:column);
+}
+//<i class="icon iconfont">&#xe630;</i>
+//<i class="fs1" aria-hidden="true" data-icon="&#xe101;"></i>
+
+
+
+//<header><a href="#"></a><a href="#"></a><a href="#"></a></header>
+@mixin header($i...){
+   
+	 header{
+	  @include nums($h:Ln($i,2),$b:Ln($i,3));
+	  @include flex($x: space-between,$y:center);
+	  flex-shrink:0;
+	  @content;
+	}
+}
+
+@mixin main(){
+	 .main{
+	    flex-grow: 1;
+	    width: 100%;
+	    overflow-y: scroll;
+	    @content;
+	 }
+}
+
+
+
+//<div class="banner"><ul><li><img src=""></li></ul>
+//<div class="point"><a href="#"></a><a href="#"></a></div></div>
+@mixin banner(){
+    .banner,.banner>ul,.banner>ul>li,.banner>ul>li>img{
+       @include nums($h:auto);
+    }
+	.banner{
+	 @include po();
+	 //@content;
+            
+	}
+	.point{
+	  a{
+	    display:inline-block;
+	    @include nums(.15rem,.15rem);
+	    @include br();
+	  }
+	  @content;
+	}
+}
+
+@mixin barr($width:null,$height:null,$po:null){
+   .left{
+      @include center($w:$width,$h:$height,$l1:$po);
+   }
+   .right{
+      @include center($w:$width,$h:$height,$r1:$po);
+   }
+
+}
+
+
+
+
+//i=(a)w,h,b,
+@mixin nav($i...){
+	nav{
+	  @include nums($h:auto);
+	  @include po();
+	  @include flex();
+	  a{
+	    display:block;
+	    @include nums($w: Ln($i,1),$h:Ln($i,2),$b:Ln($i,3));
+	    @include flex($x:center,$y:center);
+	    }
+	}
+}
+@mixin pre($count:4){
+     
+	 nav a{
+	     $ii: 1;
+	    @while $ii <= $count{
+	     &:nth-child(#{$ii}):hover ~span{
+            left: ($ii - 1) * (100%/($count));
+            $ii: $ii + 1;
+	     }
+	    }
+	 }
+}
+@mixin bar{
+      $i: $nav_List;
+	 .bar{
+	   @include nums(Ln($i,4),$h:2px,$b:green);
+	   @include po($p:absolute,$l:0,$bo:0);
+	   transition:all .5s;
+	 }
+}
+  
+
+  //set for the parent element
+@mixin dropdown(){
+	.dropdown{
+	   @include po();
+	   &:hover ul{ display: block;}
+	   ul{
+	    @include po($p:absolute,$t:100%,$l:0);
+	    z-index:33;
+	    @include tr(1s);
+	    display:none;
+	   }
+
+	}
+}
+
+//<dl class="imgfont"><dt><img src=""></dt><dd></dd></dl>
+@mixin imgfont($dir:row,$count:null){
+	 @if($dir==row){
+	   dl.imgfont,dl>dt,dl>dt>img{
+	   @include nums($h: auto);
+	   }
+	   dl{
+	     @include po();
+	    
+	     dd{
+	      @include po(absolute);
+	      @include flex($dir: column,$x: space-around);
+	     }
+	     @content;
+
+	   }
+	  
+	}@else{
+	  dl.imgfont{
+	     @include nums($h:auto);
+	     @include flex();
+	     dd{
+	      @include nums($w:(98%/$count),$h:auto);
+	      @include flex($dir:column);
+	      flex-grow:1;
+	     }
+	     img{
+	       @include nums($h:auto);
+	     }
+	     @content;
+	  }
+	//这样的是纵向图文混排，只用dd不用dt
+
+	}
+}
+
+
+@mixin iconfont($dir:row){
+   @if($dir==row){
+     .iconfont{
+      line-height:2;
+      i.icon{
+       display:inline-block;
+      }
+      @content;
+     }
+   }@else {
+     .iconfont{
+      line-height:3;
+      @include flex($dir:column,$x:center,$y:center);
+      i.icon{
+       display:inline-block;
+      }
+      @content;
+     }
+     
+   }
+	
+}
+//这是form表单的样式；
+//i=w,h,b,b-radius;
+@mixin insert($i...){
+     form,label,input{
+      display:inline-block;
+     }
+	 form{
+         @include nums($w:Ln($i,1),$h:Ln($i,2),$b:Ln($i,3));
+         //@include font($lh:Ln($i,2));
+         @include flex($y:center);
+         @include br(1234,Ln($i,4));
+         @content;
+	 }
+	 input{
+	  background:transparent;
+	  border:0;
+	  outline:0;
+	 }
+
+}
+
+
+@mixin footer{
+    $i:$footer_List;
+	 footer{
+	   @include nums($h: Ln($i,1));
+	   flex-shrink:0;
+	 }
+}
+@mixin active($co:null,$b:null){
+	 .active{
+	   #{$bg}:$b;
+	   color:$co;
+	 }
+}
+//<body id="top"></body>
+//<a href="#navi" class="open"></a>
+//<div id="navi"><a href="#top" class="close"></a></div>
+//<i class="icon iconfont">&#xe630;</i>
+//<i class="">x</i>
+@mixin mask($op:.5){
+     .mask{
+        @include po();
+        #navi{
+	     display:none;
+         @include po($p:absolute,$z:30);
+         background:rgba(0,0,0,$op);
+         &:target {
+          display:block;
+         }
+	   }
+	   .open,.close{
+          @include po($p:absolute);
+	   }
+      @content;
+     }
+	 
+}
+
+@mixin btn{
+	 .btn{
+	 display: inline-block;
+	 text-align: center;
+     white-space: nowrap;
+     vertical-align: middle;
+     -ms-touch-action: manipulation;
+     touch-action: manipulation;
+     cursor: pointer;
+     background-image: none;
+     border:none;
+     outline:none;
+     @content;
+    }
+}
+
+@mixin col{
+	 .row{
+	   @include mg(0,0,0,0);
+	   @include pa(0,0,0,0);
+	   @include flex();
+	 }
+	 $ii: 1;
+	 @while $ii <=12{
+	    .col-span-#{$ii}{width: ((100%/12)*$ii)}
+	    .col-offset-#{$ii}{
+	     @include po();
+	     left: ((100%/12)*$ii);
+	    }
+	    $ii: $ii + 1;
+	 }
+}
+
+//the color for the placeholder
+@mixin placeholder($co:null){
+	 input::-moz-placeholder {
+       color: $co;
+       opacity: 1;
+      }
+     input:-ms-input-placeholder {
+       color: $co;
+     }
+     input::-webkit-input-placeholder {
+      color: $co;
+    }
+}
+
+
+@mixin circuled($width:null,$ba:null){
+	 display:inline-block;
+	 @include nums($w:$width,$h:$width,$b:$ba);
+	 @include flex($x:center,$y:center);
+	 @include br(1234,50%);
+}
+
+

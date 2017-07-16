@@ -1,0 +1,309 @@
+@charset "UTF-8";
+//全局样式
+
+
+
+
+//混合宏和函数,变量
+
+@function Ln($list,$n){
+	@return nth($list, $n);
+}
+
+$bg:'background';
+$nc:'nth-child';
+
+@mixin nums($w:100%,$h:100%,$b:null){
+   width: $w;
+   height: $h;
+   #{$bg}:$b;
+}
+
+@mixin flex($x:null,$y:null,$dir:null,$wrap:null){
+     display:flex;
+     justify-content:$x;
+     align-items:$y;
+     flex-direction:$dir;
+     flex-wrap:$wrap;
+}
+
+@mixin font($s:null,$we:null,$st:null,$co:null,$lh:null,$ta:null,$ti:null){
+   
+      font-size:$s;
+      font-weight:$we;
+      font-style:$st;
+    color:$co;
+    line-height:$lh;
+    text-align:$ta;
+    text-indent: $ti;
+}
+
+
+
+@mixin po($p:relative,$l:null,$r:null,$t:null,$bo:null,$z:null){
+    position:$p;
+    left:$l;
+    right:$r;
+    top:$t;
+    bottom:$bo;
+    z-index:$z;
+}
+
+
+@mixin pa($t:null,$r:null,$bo:null,$l:null){
+    padding-top:$t;
+    padding-right:$r;
+    padding-bottom:$bo;
+    padding-left:$l;
+}
+@mixin mg($t:null,$r:null,$bo:null,$l:null){
+    margin-top:$t;
+    margin-right:$r;
+    margin-bottom:$bo;
+    margin-left:$l;
+}
+
+
+//边框，1上2右3下4左
+@mixin bor($dir:1234,$w:1px,$co:#333,$st:solid){
+    @if($dir==1234){
+      border:$w $st $co;
+    }@else if($dir==1){
+      border-top:$w $st $co;
+    }@else if($dir==4){
+      border-left:$w $st $co;
+    }@else if($dir==2){
+      border-right:$w $st $co;
+    }@else if($dir==3){
+       border-bottom:$w $st $co;
+    }@else if($dir==13){
+       border-top:$w $st $co;
+       border-bottom:$w $st $co;
+    }
+    @else if($dir==24){
+       border-right:$w $st $co;
+       border-left:$w $st $co;
+    }
+    @else if($dir==123){
+       border-top:$w $st $co;
+       border-right:$w $st $co;
+       border-bottom:$w $st $co;
+    }
+    @else if($dir==134){
+       border-top:$w $st $co;
+       border-left:$w $st $co;
+       border-bottom:$w $st $co;
+    }
+}
+
+//省略号
+@mixin ellipsis(){
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+@mixin ellipsis_2($r:2){
+   display:-webkit-box;
+   word-break:break-all;
+   -webkit-box-orient:vertical;
+   -webkit-line-clamp:$r;
+   text-overflow:ellipsis;
+   overflow:hidden;
+}
+
+@mixin tr($pr:null,$ti:.5s,$ind:null){
+    transition:$pr $ti;
+    &:hover {
+     #{$pr}:$ind;
+    }
+}
+@mixin check{
+    .check{
+    @include po($p:absolute);
+    @include nums(.2rem,.2rem);
+    
+    span,input{
+      @include po($p:absolute);
+      left:0;
+      top:0;
+    }
+    
+  span{
+    display:inline-block;
+    @include nums(.2rem,.2rem,transparent);
+    @include br();
+    @include bor($w:2px,$st:solid,$co:#ccc);
+    color:transparent;
+    transition:all .5s;
+  }
+  input{
+  z-index:33;
+     @include nums(.2rem,.2rem);
+     opacity:0;
+   &:checked ~span{
+           #{$bg}:red;
+           color:#fff;
+           border-color:transparent;
+   }
+  }
+  }
+}
+
+//-----------------------------------动画keyframes生成-----------------------------------------  
+//动画keyframes生成  
+//例子：@include keyframes(动画名称);  
+//@include keyframes(move-the-object) {  
+//    0% {  
+//        transform: translateX(0);  
+//    }  
+//    100% {  
+//        transform: translateX(200px);  
+//    }  
+//}  
+@mixin keyframes($animationName) {  
+    @-webkit-keyframes #{$animationName} {  
+        @content;  
+    }  
+    @-moz-keyframes #{$animationName} {  
+        @content;  
+    }  
+    @-o-keyframes #{$animationName} {  
+        @content;  
+    }  
+    @keyframes #{$animationName} {  
+        @content;  
+    }  
+}  
+
+
+//-----------------------------------圆角-----------------------------------------  
+//radius:圆角  
+//例子：@include radius(24,100%);  
+@mixin br($num:1234, $size: 50%) {  
+    @if $num==1234 {  
+        -webkit-border-radius: $size; //Saf3+, Chrome  
+        -moz-border-radius: $size; //FF1+  
+        border-radius: $size; //Opera 10.5, IE 9  
+        -ms-border-radius: $size;  
+    }  
+    @if $num==12 {  
+        -webkit-border-top-left-radius: $size;  
+        border-top-left-radius: $size;  
+        -webkit-border-top-right-radius: $size;  
+        border-top-right-radius: $size;  
+        -moz-border-top-left-radius: $size;  
+        -ms-border-top-left-radius: $size;  
+        -moz-border-top-right-radius: $size;  
+        -ms-border-top-right-radius: $size;  
+    }  
+    @if $num==23 {  
+        -webkit-border-top-right-radius: $size;  
+        border-top-right-radius: $size;  
+        -webkit-border-bottom-right-radius: $size;  
+        border-bottom-right-radius: $size;  
+        -moz-border-top-right-radius: $size;  
+        -moz-border-bottom-right-radius: $size;  
+        -ms-border-top-right-radius: $size;  
+        -ms-border-bottom-right-radius: $size;  
+    }  
+    @if $num==34 {  
+        -webkit-border-bottom-right-radius: $size;  
+        border-bottom-right-radius: $size;  
+        -webkit-border-bottom-left-radius: $size;  
+        border-bottom-left-radius: $size;  
+        -moz-border-bottom-left-radius: $size;  
+        -moz-border-bottom-right-radius: $size;  
+        -ms-border-bottom-left-radius: $size;  
+        -ms-border-bottom-right-radius: $size;  
+    }  
+    @if $num==14 {  
+        -webkit-border-top-left-radius: $size;  
+        border-top-left-radius: $size;  
+        -webkit-border-bottom-left-radius: $size;  
+        border-bottom-left-radius: $size;  
+        -moz-border-top-left-radius: $size;  
+        -moz-border-bottom-left-radius: $size;  
+        -ms-border-top-left-radius: $size;  
+        -ms-border-bottom-left-radius: $size;  
+    }  
+    @if $num==13 {  
+        -webkit-border-top-left-radius: $size;  
+        -webkit-border-bottom-right-radius: $size;  
+        -ms-border-top-left-radius: $size;  
+        -ms-border-bottom-right-radius: $size;  
+        border-top-left-radiu: $size;  
+        -moz-border-top-left-radius: $size;  
+        border-bottom-right-radiu: $size;  
+        -moz-border-bottom-right-radius: $size;  
+    }  
+    @if $num==24 {  
+        -webkit-border-top-right-radius: $size;  
+        border-top-right-radius: $size;  
+        -webkit-border-bottom-left-radius: $size;  
+        border-bottom-left-radius: $size;  
+        -moz-border-top-right-radius: $size;  
+        -moz-border-bottom-left-radius: $size;  
+        -ms-border-top-right-radius: $size;  
+        -ms-border-bottom-left-radius: $size;  
+    }  
+}  
+
+
+// 设置过渡
+@mixin tr($t:null,$d:null) {
+    -webkit-transition:all $t $d;
+    -moz-transition:all $t $d;
+    -o-transition:all $t $d;
+    transition:all $t $d;
+}
+// 设置旋转位置
+@mixin transform-origin($origin...) {
+    -webkit-transform-origin:$origin;
+    -moz-transform-origin:$origin;
+    -o-transform-origin:$origin;
+    transform-origin:$origin;
+}
+
+//juzhong
+@mixin center($w:null, $h:null,$t1:50%,$l1:50%,$r1:null) {
+    @if($r1==null)and($l1==50%)and($t1==50%){
+    @include po($p:absolute,$t:$t1,$l:$l1);
+    width:$w;
+    height:$h;
+    margin:(-$h / 2) 0 0 (-$w / 2);
+    }@else if($r1==null)and($l1!=50%)and($t1==50%){
+    @include po($p:absolute,$t:$t1,$r:$r1);
+    width:$w;
+    height:$h;
+    margin:(-$h / 2) 0 0 0;
+    }
+    @else if($r1!=null){
+    @include po($p:absolute,$t:$t1,$r:$r1);
+    width:$w;
+    height:$h;
+    margin:(-$h / 2) 0 0 0;
+    }
+    
+}
+//yan se han shu
+@mixin colors($n:0,$co...){
+   $i: 0;
+     
+   @while $i < $n{
+      $i: $i + 1;
+     .color-#{$i}{
+        color: Ln($co,$i);
+     }
+   }
+}
+//beijing se hanshu
+@mixin backgrounds($n:0,$co...){
+   $i: 0;
+     
+   @while $i < $n{
+      $i: $i + 1;
+     .color-#{$i}{
+        background: Ln($co,$i);
+     }
+   }
+}
